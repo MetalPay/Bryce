@@ -10,7 +10,7 @@ import Alamofire
 
 public protocol DecodableError: Decodable, Error {
     
-    static func decodingError() -> Self
+    static func decodingError(statusCode: Int?) -> Self
 }
 
 public enum BryceNetworkingError: Error {
@@ -262,7 +262,9 @@ extension Bryce {
         
         else {
 
-            guard let data = alamofireResponse.data else { return result(.failure(T.decodingError())) }
+            guard let data = alamofireResponse.data else {
+                return result(.failure(T.decodingError(statusCode: alamofireResponse.response?.statusCode)))
+            }
             
             do {
              
@@ -273,7 +275,7 @@ extension Bryce {
             catch {
                 
                 logResponseError(alamofireResponse: alamofireResponse, customDecodingError: error)
-                return result(.failure(T.decodingError()))
+                return result(.failure(T.decodingError(statusCode: alamofireResponse.response?.statusCode)))
             }
         }
     }
@@ -284,12 +286,14 @@ extension Bryce {
             
             if let serialized = alamofireResponse.result.value { return result(.success(serialized)) }
                 
-            else { return result(.failure(T.decodingError())) }
+            else { return result(.failure(T.decodingError(statusCode: alamofireResponse.response?.statusCode))) }
         }
             
         else {
 
-            guard let data = alamofireResponse.data else { return result(.failure(T.decodingError())) }
+            guard let data = alamofireResponse.data else {
+                return result(.failure(T.decodingError(statusCode: alamofireResponse.response?.statusCode)))
+            }
             
             do {
              
@@ -300,7 +304,7 @@ extension Bryce {
             catch {
                 
                 logResponseError(alamofireResponse: alamofireResponse, customDecodingError: error)
-                return result(.failure(T.decodingError()))
+                return result(.failure(T.decodingError(statusCode: alamofireResponse.response?.statusCode)))
             }
         }
     }
