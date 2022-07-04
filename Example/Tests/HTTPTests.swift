@@ -11,7 +11,7 @@ extension RouteComponent {
 
 struct BryceTestError: DecodableError {
     
-    static func decodingError() -> BryceTestError {
+    static func decodingError(statusCode: Int? = nil) -> BryceTestError {
         
         return .init(error: "error_decoding_failure", message: "Something went wrong.")
     }
