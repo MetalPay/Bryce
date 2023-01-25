@@ -6,17 +6,17 @@
         "repositoryURL": "https://github.com/Alamofire/Alamofire.git",
         "state": {
           "branch": null,
-          "revision": "747c8db8d57b68d5e35275f10c92d55f982adbd4",
-          "version": "4.9.1"
+          "revision": "9e0328127dfb801cefe8ac53a13c0c90a7770448",
+          "version": "5.4.0"
         }
       },
       {
         "package": "AlamofireNetworkActivityLogger",
-        "repositoryURL": "https://github.com/erusso1/AlamofireNetworkActivityLogger.git",
+        "repositoryURL": "https://github.com/konkab/AlamofireNetworkActivityLogger",
         "state": {
           "branch": null,
-          "revision": "29d4e24f9ed371d7c3f19517e2fe0b3f658d6e47",
-          "version": "2.4.1"
+          "revision": "8db9d4e27176905298e7215e3d800e349cdfa30b",
+          "version": "3.4.0"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/Otbivnoe/CodableAlamofire.git",
         "state": {
           "branch": null,
-          "revision": "1521aa1d5e63163a00e57e0201b084403490fe3b",
-          "version": "1.1.2"
+          "revision": "a4313aa4bc09c09703f7ba71ab1300059abbde24",
+          "version": "1.2.1"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/kishikawakatsumi/KeychainAccess.git",
         "state": {
           "branch": null,
-          "revision": "b920ad7df3c73189dcdd4aa05c540849b2010dbf",
-          "version": "4.1.0"
+          "revision": "84e546727d66f1adc5439debad16270d0fdd04e7",
+          "version": "4.2.2"
         }
       }
     ]

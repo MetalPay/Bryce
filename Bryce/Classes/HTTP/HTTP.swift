@@ -36,6 +36,8 @@ public typealias VoidDecodableErrorResult<T: DecodableError> = (Swift.Result<Voi
 
 extension Bryce {
     
+    private var networkErrorStatusCode: Int { -1001 }
+    
     @discardableResult
     public func request<D: Decodable>(_ path: RouteComponent..., method: HTTPMethod = .get, headers: HTTPHeaders? = nil, validate: Bool = true, /*etagEnabled: Bool = false,*/ as responseType: D.Type, result: @escaping DecodableResult<D>) -> DataRequest {
         
@@ -253,58 +255,64 @@ extension Bryce {
         return dataRequest
     }
     
-    private func handleDefaultResponse<T: DecodableError>(alamofireResponse: AFDataResponse<Data?>, decodableErrorType: T.Type, result: @escaping VoidDecodableErrorResult<T>) {
-        
+    private func handleDefaultResponse<T: DecodableError>(
+        alamofireResponse: AFDataResponse<Data?>,
+        decodableErrorType: T.Type,
+        result: @escaping VoidDecodableErrorResult<T>
+    ) {
         if alamofireResponse.error == nil {
-            
             return result(.success(()))
-        }
-        
-        else {
-
+        } else {
             guard let data = alamofireResponse.data else {
-                return result(.failure(T.decodingError(statusCode: alamofireResponse.response?.statusCode)))
+                let statusCode = alamofireResponse.response?.statusCode ?? networkErrorStatusCode
+                
+                return result(.failure(T.decodingError(statusCode: statusCode)))
             }
             
             do {
-             
                 let decodedError = try self.configuration.responseDecoder.decode(decodableErrorType, from: data)
+                
                 return result(.failure(decodedError))
-            }
-            
-            catch {
+            } catch {
+                let statusCode = alamofireResponse.response?.statusCode ?? networkErrorStatusCode
                 
                 logResponseError(alamofireResponse: alamofireResponse, customDecodingError: error)
-                return result(.failure(T.decodingError(statusCode: alamofireResponse.response?.statusCode)))
+                
+                return result(.failure(T.decodingError(statusCode: statusCode)))
             }
         }
     }
     
-    private func handleDecodedResponse<D: Decodable, T: DecodableError>(alamofireResponse: AFDataResponse<D>, decodableErrorType: T.Type, result: @escaping DecodableErrorResult<D, T>) {
-        
+    private func handleDecodedResponse<D: Decodable, T: DecodableError>(
+        alamofireResponse: AFDataResponse<D>,
+        decodableErrorType: T.Type,
+        result: @escaping DecodableErrorResult<D, T>
+    ) {
         if alamofireResponse.error == nil {
-            
-            if let serialized = alamofireResponse.result.value { return result(.success(serialized)) }
-                
-            else { return result(.failure(T.decodingError(statusCode: alamofireResponse.response?.statusCode))) }
-        }
-            
-        else {
+            if let serialized = alamofireResponse.result.value {
+                return result(.success(serialized))
+            } else {
+                let statusCode = alamofireResponse.response?.statusCode ?? networkErrorStatusCode
 
+                return result(.failure(T.decodingError(statusCode: statusCode)))
+            }
+        } else {
             guard let data = alamofireResponse.data else {
-                return result(.failure(T.decodingError(statusCode: alamofireResponse.response?.statusCode)))
+                let statusCode = alamofireResponse.response?.statusCode ?? networkErrorStatusCode
+
+                return result(.failure(T.decodingError(statusCode: statusCode)))
             }
             
             do {
-             
                 let decodedError = try self.configuration.responseDecoder.decode(decodableErrorType, from: data)
+
                 return result(.failure(decodedError))
-            }
-            
-            catch {
-                
+            } catch {
                 logResponseError(alamofireResponse: alamofireResponse, customDecodingError: error)
-                return result(.failure(T.decodingError(statusCode: alamofireResponse.response?.statusCode)))
+                
+                let statusCode = alamofireResponse.response?.statusCode ?? networkErrorStatusCode
+
+                return result(.failure(T.decodingError(statusCode: statusCode)))
             }
         }
     }

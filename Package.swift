@@ -14,9 +14,9 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", .upToNextMajor(from: "4.1.0")),
-        .package(url: "https://github.com/Alamofire/Alamofire.git", .exact("4.9.1")),
-        .package(url: "https://github.com/erusso1/AlamofireNetworkActivityLogger.git", .exact("2.4.1")),
-        .package(url: "https://github.com/Otbivnoe/CodableAlamofire.git", .exact("1.1.2")),
+        .package(url: "https://github.com/Alamofire/Alamofire.git", .exact("5.4.0")),
+        .package(url: "https://github.com/konkab/AlamofireNetworkActivityLogger", .exact("3.4.0")),
+        .package(url: "https://github.com/Otbivnoe/CodableAlamofire.git", .exact("1.2.1")),
     ],
     targets: [
         .target(
